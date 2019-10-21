@@ -26,13 +26,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.testing.NullPointerTester;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
+
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+
+import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Mockito.*;
+
 
 /**
  * Unit test for {@link Joiner}.
@@ -55,6 +57,28 @@ public class JoinerTest extends TestCase {
   private static final Iterable<Integer> ITERABLE_1_NULL_2 = Arrays.asList(1, null, 2);
   private static final Iterable<Integer> ITERABLE_FOUR_NULLS =
       Arrays.asList((Integer) null, null, null, null);
+
+  public void testSkipNullsClassInteraction(){
+    Joiner mockedJoiner = mock(Joiner.class);
+    mockedJoiner.skipNulls();
+    verify(mockedJoiner).skipNulls();
+    verifyNoMoreInteractions(mockedJoiner);
+
+    Joiner trueJoiner = Joiner.on("-").skipNulls();
+
+    assertNotEquals(trueJoiner.join(ITERABLE_1_NULL_2), mockedJoiner.join(ITERABLE_1_NULL_2));
+  }
+
+  public void testUseForNullsClassInteraction(){
+    Joiner mockedJoiner = mock(Joiner.class);
+    mockedJoiner.useForNull("0");
+    verify(mockedJoiner).useForNull("0");
+    verifyNoMoreInteractions(mockedJoiner);
+
+    Joiner trueJoiner = Joiner.on("-").useForNull("0");
+
+    assertNotEquals(trueJoiner.join(ITERABLE_1_NULL_2), mockedJoiner.join(ITERABLE_1_NULL_2));
+  }
 
   public void testNoSpecialNullBehavior() {
     checkNoOutput(J, ITERABLE_);
