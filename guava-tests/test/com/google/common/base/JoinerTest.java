@@ -235,6 +235,7 @@ public class JoinerTest extends TestCase {
     }
   }
 
+  // tests behavior when "skipNulls" is called after initializing instance with "useForNull"
   public void test_useForNull_skipNulls() {
     Joiner j = Joiner.on("x").useForNull("y");
     try {
@@ -244,6 +245,7 @@ public class JoinerTest extends TestCase {
     }
   }
 
+  // tests behavior when "useForNull" is called after initializing instance with "skipNulls"
   public void test_skipNulls_useForNull() {
     Joiner j = Joiner.on("x").skipNulls();
     try {
@@ -253,6 +255,7 @@ public class JoinerTest extends TestCase {
     }
   }
 
+  // tests behavior when "useForNull" is called again after initializing instance with "useForNull"
   public void test_useForNull_twice() {
     Joiner j = Joiner.on("x").useForNull("y");
     try {
