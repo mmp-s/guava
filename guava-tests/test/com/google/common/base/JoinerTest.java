@@ -265,6 +265,28 @@ public class JoinerTest extends TestCase {
     }
   }
 
+  // tests behavior when "useForNull" is called on top of an already initialized Joiner instance
+  public void test_useForNull_afterInit() {
+    Joiner j = Joiner.on("x");
+    try {
+      j.useForNull("y");
+      j.join(ITERABLE_1_NULL_2);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  // tests behavior when "skipNulls" is called on top of an already initialized Joiner instance
+  public void test_skipNulls_afterInit() {
+    Joiner j = Joiner.on("x");
+    try {
+      j.skipNulls();
+      j.join(ITERABLE_1_NULL_2);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+  }
+
   public void testMap() {
     MapJoiner j = Joiner.on(';').withKeyValueSeparator(':');
     assertEquals("", j.join(ImmutableMap.of()));
